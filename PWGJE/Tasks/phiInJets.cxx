@@ -81,7 +81,7 @@ struct phiInJets {
   Configurable<bool> cfgMCGenHists{"cfgMCGenHists", false, "Enables MCGenHists"};
   Configurable<bool> cfgMCGenMATCHEDHists{"cfgMCGenMATCHEDHists", false, "Enables MCGenMATCHEDHists"};
   Configurable<bool> cfgMCRecMATCHEDHists{"cfgMCRecMATCHEDHists", false, "Enables MCRecMATCHEDHists"};
-  
+
   // CONFIG DONE
   /////////////////////////////////////////  //INIT
 
@@ -165,11 +165,11 @@ struct phiInJets {
 
       JEhistos.add("hMCRecTrue_hUSS", "hMCRecTrue_hUSS", kTH3F, {dRAxis, PtAxis, MinvAxis});
       JEhistos.add("hMCRecTrue_hLSS", "hMCRecTrue_hLSS", kTH3F, {dRAxis, PtAxis, MinvAxis});
-      
+
       JEhistos.add("hMCRec_hUSS", "hMCRec_hUSS", kTH3F, {dRAxis, PtAxis, MinvAxis});
       JEhistos.add("hMCRec_hUSS_1D", "hMCRec_hUSS_1D", kTH1F, {MinvAxis});
       JEhistos.add("hMCRec_hUSS_1D_2_3", "hMCRec_hUSS_1D_2_3", kTH1F, {MinvAxis});
-      
+
       JEhistos.add("hMCRec_hLSS", "hMCRec_hLSS", kTH3F, {dRAxis, PtAxis, MinvAxis});
       JEhistos.add("hMCRec_hLSS_1D", "hMCRec_hLSS_1D", kTH1F, {MinvAxis});
       JEhistos.add("hMCRec_hLSS_1D_2_3", "hMCRec_hLSS_1D_2_3", kTH1F, {MinvAxis});
@@ -177,7 +177,7 @@ struct phiInJets {
       JEhistos.add("hMCRec_hUSS_INSIDE", "hMCRec_hUSS_INSIDE", kTH3F, {dRAxis, PtAxis, MinvAxis});
       JEhistos.add("hMCRec_hUSS_INSIDE_1D", "hMCRec_hUSS_INSIDE_1D", kTH1F, {MinvAxis});
       JEhistos.add("hMCRec_hUSS_INSIDE_1D_2_3", "hMCRec_hUSS_INSIDE_1D_2_3", kTH1F, {MinvAxis});
-      
+
       JEhistos.add("hMCRec_hLSS_INSIDE", "hMCRec_hLSS_INSIDE", kTH3F, {dRAxis, PtAxis, MinvAxis});
       JEhistos.add("hMCRec_hLSS_INSIDE_1D", "hMCRec_hLSS_INSIDE_1D", kTH1F, {MinvAxis});
       JEhistos.add("hMCRec_hLSS_INSIDE_1D_2_3", "hMCRec_hLSS_INSIDE_1D_2_3", kTH1F, {MinvAxis});
@@ -719,61 +719,59 @@ struct phiInJets {
         if (lResonance.M() > 1.005 && lResonance.M() < 1.035)
           PhiCand++;
 
-	//==================
-	// 1.MB REC Closure
-	//==================
-	if (originalTrack.sign() * originalTrack2.sign() < 0) {
-	  JEhistos.fill(HIST("hMCRec_hUSS"), 1.0, lResonance.Pt(), lResonance.M());
-	}
-	else if (originalTrack.sign() * originalTrack2.sign() > 0) {
-	  JEhistos.fill(HIST("hMCRec_hLSS"), 1.0, lResonance.Pt(), lResonance.M());
-	}
-	//============================================
-	// 2.Check if particle is inside a jet or not
-	//============================================
-	bool jetFlag = false;
-	int goodjets = 0;
-	double jetpt = 0;
+        //==================
+        // 1.MB REC Closure
+        //==================
+        if (originalTrack.sign() * originalTrack2.sign() < 0) {
+          JEhistos.fill(HIST("hMCRec_hUSS"), 1.0, lResonance.Pt(), lResonance.M());
+        } else if (originalTrack.sign() * originalTrack2.sign() > 0) {
+          JEhistos.fill(HIST("hMCRec_hLSS"), 1.0, lResonance.Pt(), lResonance.M());
+        }
+        //============================================
+        // 2.Check if particle is inside a jet or not
+        //============================================
+        bool jetFlag = false;
+        int goodjets = 0;
+        double jetpt = 0;
 
-	for (std::size_t i = 0; i < mcd_pt.size(); i++) {
-	  if (i == 0) {
-	    if (lResonance.M() > 1.005 && lResonance.M() < 1.035) {
-	      RealPhiCandWithJet++;
-	    }
-	  }
-	  double phidiff = TVector2::Phi_mpi_pi(mcd_phi[i] - lResonance.Phi());
-	  double etadiff = mcd_eta[i] - lResonance.Eta();
-	  double R = TMath::Sqrt((etadiff * etadiff) + (phidiff * phidiff));
+        for (std::size_t i = 0; i < mcd_pt.size(); i++) {
+          if (i == 0) {
+            if (lResonance.M() > 1.005 && lResonance.M() < 1.035) {
+              RealPhiCandWithJet++;
+            }
+          }
+          double phidiff = TVector2::Phi_mpi_pi(mcd_phi[i] - lResonance.Phi());
+          double etadiff = mcd_eta[i] - lResonance.Eta();
+          double R = TMath::Sqrt((etadiff * etadiff) + (phidiff * phidiff));
 
-	  double phidiff_K1 = TVector2::Phi_mpi_pi(mcd_phi[i] - lDecayDaughter1.Phi());
-	  double etadiff_K1 = mcd_eta[i] - lDecayDaughter1.Eta();
-	  double R_K1 = TMath::Sqrt((etadiff_K1 * etadiff_K1) + (phidiff_K1 * phidiff_K1));
-	  
-	  double phidiff_K2 = TVector2::Phi_mpi_pi(mcd_phi[i] - lDecayDaughter2.Phi());
-	  double etadiff_K2 = mcd_eta[i] - lDecayDaughter2.Eta();
-	  double R_K2 = TMath::Sqrt((etadiff_K2 * etadiff_K2) + (phidiff_K2 * phidiff_K2));
-	  if (R < cfgjetR) {
-	    JEhistos.fill(HIST("hMCRec_nonmatch_hUSS_Kangle_v_pt"), R_K1, lResonance.Pt());
-	    JEhistos.fill(HIST("hMCRec_nonmatch_hUSS_Kangle_v_pt"), R_K2, lResonance.Pt());
-	  }
-	  if (R < cfgjetR) {
-	    jetFlag = true;
-	    jetpt = mcd_pt[i];
-	    goodjets++;
-	  }
-	} // R check for jets
-	
-	//======================
-	// 3.INSIDE REC Closure
-	//======================
-	if (jetFlag) {
-	  if (originalTrack.sign() * originalTrack2.sign() < 0) {
-	    JEhistos.fill(HIST("hMCRec_hUSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
-	  }
-	  else if (originalTrack.sign() * originalTrack2.sign() > 0) {
-	    JEhistos.fill(HIST("hMCRec_hLSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
-	  }
-	}
+          double phidiff_K1 = TVector2::Phi_mpi_pi(mcd_phi[i] - lDecayDaughter1.Phi());
+          double etadiff_K1 = mcd_eta[i] - lDecayDaughter1.Eta();
+          double R_K1 = TMath::Sqrt((etadiff_K1 * etadiff_K1) + (phidiff_K1 * phidiff_K1));
+
+          double phidiff_K2 = TVector2::Phi_mpi_pi(mcd_phi[i] - lDecayDaughter2.Phi());
+          double etadiff_K2 = mcd_eta[i] - lDecayDaughter2.Eta();
+          double R_K2 = TMath::Sqrt((etadiff_K2 * etadiff_K2) + (phidiff_K2 * phidiff_K2));
+          if (R < cfgjetR) {
+            JEhistos.fill(HIST("hMCRec_nonmatch_hUSS_Kangle_v_pt"), R_K1, lResonance.Pt());
+            JEhistos.fill(HIST("hMCRec_nonmatch_hUSS_Kangle_v_pt"), R_K2, lResonance.Pt());
+          }
+          if (R < cfgjetR) {
+            jetFlag = true;
+            jetpt = mcd_pt[i];
+            goodjets++;
+          }
+        } // R check for jets
+
+        //======================
+        // 3.INSIDE REC Closure
+        //======================
+        if (jetFlag) {
+          if (originalTrack.sign() * originalTrack2.sign() < 0) {
+            JEhistos.fill(HIST("hMCRec_hUSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
+          } else if (originalTrack.sign() * originalTrack2.sign() > 0) {
+            JEhistos.fill(HIST("hMCRec_hLSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
+          }
+        }
 
         // check PID
         if (track.has_mcParticle() && track2.has_mcParticle()) {
@@ -827,33 +825,31 @@ struct phiInJets {
           double R_Kaons = TMath::Sqrt((etadiff_Kaons * etadiff_Kaons) + (phidiff_Kaons * phidiff_Kaons));
           JEhistos.fill(HIST("hMCRec_nonmatch_hUSS_KtoKangle_v_pt"), R_Kaons, lResonance.Pt());
           JEhistos.fill(HIST("ptJEHistogramPhi"), lResonance.Pt());
-	  
-	  //=====================
-	  // 4.MB True Closure
-	  //=====================
-	  if (originalTrack.sign() * originalTrack2.sign() < 0) {
-	    JEhistos.fill(HIST("hMCRecTrue_hUSS"), 1.0, lResonance.Pt(), lResonance.M());
-	  }
-	  else if (originalTrack.sign() * originalTrack2.sign() > 0) {
-	    JEhistos.fill(HIST("hMCRecTrue_hLSS"), 1.0, lResonance.Pt(), lResonance.M());
-	  }
 
-	  //===========================
-	  // 5.INSIDE REC True Closure
-	  //===========================
-	  if (jetFlag) {
-	    if (originalTrack.sign() * originalTrack2.sign() < 0) {
-	      JEhistos.fill(HIST("hMCRecTrue_hUSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
-	    }
-	    else if (originalTrack.sign() * originalTrack2.sign() > 0) {
-	      JEhistos.fill(HIST("hMCRecTrue_hLSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
-	    }
-	  }
-	  
+          //=====================
+          // 4.MB True Closure
+          //=====================
+          if (originalTrack.sign() * originalTrack2.sign() < 0) {
+            JEhistos.fill(HIST("hMCRecTrue_hUSS"), 1.0, lResonance.Pt(), lResonance.M());
+          } else if (originalTrack.sign() * originalTrack2.sign() > 0) {
+            JEhistos.fill(HIST("hMCRecTrue_hLSS"), 1.0, lResonance.Pt(), lResonance.M());
+          }
+
+          //===========================
+          // 5.INSIDE REC True Closure
+          //===========================
+          if (jetFlag) {
+            if (originalTrack.sign() * originalTrack2.sign() < 0) {
+              JEhistos.fill(HIST("hMCRecTrue_hUSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
+            } else if (originalTrack.sign() * originalTrack2.sign() > 0) {
+              JEhistos.fill(HIST("hMCRecTrue_hLSS_INSIDE"), 1.0, lResonance.Pt(), lResonance.M());
+            }
+          }
+
           if (lResonance.M() > 1.005 && lResonance.M() < 1.035)
             RealPhiCand++;
 
-	  // Now we do jets
+          // Now we do jets
           if (cfgSingleJet)
             if (goodjets > 1)
               jetpt = DistinguishJetsMC(mcd_pt, mcd_phi, mcd_eta, lResonance);
@@ -1207,7 +1203,7 @@ struct phiInJets {
         lDecayDaughter1_REC.SetXYZM(phi_dgth_px[0], phi_dgth_py[0], phi_dgth_pz[0], massKa);
         lDecayDaughter2_REC.SetXYZM(phi_dgth_px[1], phi_dgth_py[1], phi_dgth_pz[1], massKa);
         lResonance_REC = lDecayDaughter1_REC + lDecayDaughter2_REC;
-	
+
         bool jetFlag = false;
         for (std::vector<double>::size_type i = 0; i < mcp_pt.size(); i++) {
           double phidiff = TVector2::Phi_mpi_pi(mcp_phi[i] - lResonance.Phi());
