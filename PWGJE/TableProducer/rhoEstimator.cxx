@@ -194,17 +194,17 @@ struct RhoEstimatorTask {
   }
   PROCESS_SWITCH(RhoEstimatorTask, processLcMcCollisions, "Fill rho tables for collisions with Lc MCP candidates", false);
 
-    void processBplusCollisions(aod::JetCollision const&, soa::Filtered<aod::JetTracks> const& tracks, aod::CandidatesBplusData const& candidates)
-    {
+  void processBplusCollisions(aod::JetCollision const&, soa::Filtered<aod::JetTracks> const& tracks, aod::CandidatesBplusData const& candidates)
+  {
+    inputParticles.clear();
+    for (auto& candidate : candidates) {
       inputParticles.clear();
-      for (auto& candidate : candidates) {
-        inputParticles.clear();
-        jetfindingutilities::analyseTracks(inputParticles, tracks, trackSelection, trackingEfficiency, std::optional{candidate});
+      jetfindingutilities::analyseTracks(inputParticles, tracks, trackSelection, trackingEfficiency, std::optional{candidate});
 
-        auto [rho, rhoM] = bkgSub.estimateRhoAreaMedian(inputParticles, doSparse);
-        rhoBplusTable(rho, rhoM);
-      }
+      auto [rho, rhoM] = bkgSub.estimateRhoAreaMedian(inputParticles, doSparse);
+      rhoBplusTable(rho, rhoM);
     }
+  }
     PROCESS_SWITCH(RhoEstimatorTask, processBplusCollisions, "Fill rho tables for collisions with Bplus candidates", false);
 
     void processBplusMcCollisions(aod::JetMcCollision const&, soa::Filtered<aod::JetParticles> const& particles, aod::CandidatesBplusMCP const& candidates)
@@ -220,17 +220,17 @@ struct RhoEstimatorTask {
     }
     PROCESS_SWITCH(RhoEstimatorTask, processBplusMcCollisions, "Fill rho tables for collisions with Bplus MCP candidates", false);
 
-  void processDielectronCollisions(aod::JetCollision const&, soa::Filtered<aod::JetTracks> const& tracks, aod::CandidatesDielectronData const& candidates)
-  {
-    inputParticles.clear();
-    for (auto& candidate : candidates) {
+    void processDielectronCollisions(aod::JetCollision const&, soa::Filtered<aod::JetTracks> const& tracks, aod::CandidatesDielectronData const& candidates)
+    {
       inputParticles.clear();
-      jetfindingutilities::analyseTracks(inputParticles, tracks, trackSelection, trackingEfficiency, std::optional{candidate});
+      for (auto& candidate : candidates) {
+        inputParticles.clear();
+        jetfindingutilities::analyseTracks(inputParticles, tracks, trackSelection, trackingEfficiency, std::optional{candidate});
 
-      auto [rho, rhoM] = bkgSub.estimateRhoAreaMedian(inputParticles, doSparse);
-      rhoDielectronTable(rho, rhoM);
+        auto [rho, rhoM] = bkgSub.estimateRhoAreaMedian(inputParticles, doSparse);
+        rhoDielectronTable(rho, rhoM);
+      }
     }
-  }
   PROCESS_SWITCH(RhoEstimatorTask, processDielectronCollisions, "Fill rho tables for collisions with Dielectron candidates", false);
 
   void processDielectronMcCollisions(aod::JetMcCollision const&, soa::Filtered<aod::JetParticles> const& particles, aod::CandidatesDielectronMCP const& candidates)

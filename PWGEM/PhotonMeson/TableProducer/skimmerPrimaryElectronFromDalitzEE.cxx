@@ -278,7 +278,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
         fillTrackTable(collision, t1);
         fillTrackTable(collision, t2);
       } // end of t2
-    }   // end of t1
+    } // end of t1
   }
 
   std::vector<std::pair<int64_t, int64_t>> stored_trackIds;
@@ -305,7 +305,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
       auto negTracks_per_coll = negTracks->sliceByCached(o2::aod::track::collisionId, collision.globalIndex(), cache);
 
       fillPairInfo<false>(collision, posTracks_per_coll, negTracks_per_coll); // ULS
-    }                                                                         // end of collision loop
+    } // end of collision loop
 
     stored_trackIds.clear();
     stored_trackIds.shrink_to_fit();
@@ -334,7 +334,7 @@ struct skimmerPrimaryElectronFromDalitzEE {
       auto negTracks_per_coll = negTracksMC->sliceByCached(o2::aod::track::collisionId, collision.globalIndex(), cache);
 
       fillPairInfo<true>(collision, posTracks_per_coll, negTracks_per_coll); // ULS
-    }                                                                        // end of collision loop
+    } // end of collision loop
 
     stored_trackIds.clear();
     stored_trackIds.shrink_to_fit();

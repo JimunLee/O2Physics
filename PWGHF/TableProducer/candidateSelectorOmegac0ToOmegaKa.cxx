@@ -567,7 +567,7 @@ struct HfCandidateSelectorToOmegaKa {
       }
     }
   } // end process
-};  // end struct
+}; // end struct
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
