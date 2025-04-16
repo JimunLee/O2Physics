@@ -92,7 +92,7 @@ struct phiInJets {
   Configurable<int> cfgMinvNBins{"cfgMinvNBins", 500, "Number of bins for Minv axis"};
   Configurable<float> cfgMinvMin{"cfgMinvMin", 0.75, "Minimum Minv value"};
   Configurable<float> cfgMinvMax{"cfgMinvMax", 1.25, "Maximum Minv value"};
-  
+
 
   // CONFIG DONE
   /////////////////////////////////////////  //INIT
@@ -181,17 +181,17 @@ struct phiInJets {
         JEhistos.add("hMCRec_hLSS", "hMCRec_hLSS", kTHnSparseF, {dRAxis, PtAxis, MinvAxis});
         JEhistos.add("hMCRecTrue_hUSS", "hMCRecTrue_hUSS", kTHnSparseF, {dRAxis, PtAxis, MinvAxis});
         JEhistos.add("hMCRecTrue_hLSS", "hMCRecTrue_hLSS", kTHnSparseF, {dRAxis, PtAxis, MinvAxis});
-	JEhistos.add("hMCRec_R_distribution", "hMCRec_R_distribution", kTH1F, {{100, 0.0, 2*TMath::Pi()}});
-	JEhistos.add("hMCRec_dPhi_distribution", "hMCRec_dPhi_distribution", kTH1F, {{80, -5.0, 7.0}});
-	JEhistos.add("hMCRec_dEta_distribution", "hMCRec_dEta_distribution", kTH1F, {{100, -2.0, 2.0}});
+  JEhistos.add("hMCRec_R_distribution", "hMCRec_R_distribution", kTH1F, {{100, 0.0, 2*TMath::Pi()}});
+  JEhistos.add("hMCRec_dPhi_distribution", "hMCRec_dPhi_distribution", kTH1F, {{80, -5.0, 7.0}});
+  JEhistos.add("hMCRec_dEta_distribution", "hMCRec_dEta_distribution", kTH1F, {{100, -2.0, 2.0}});
 
-	if (cfgMCRecRotationalHists){
-	  JEhistos.add("hMCRec_hUSS_Rotational", "hMCRec_hUSS_Rotational", kTHnSparseF, {dRAxis, PtAxis, MinvAxis});
-	  JEhistos.add("hMCRec_R_Rotation_distribution", "hMCRec_R_Rotation_distribution", HistType::kTH1F, {{100, 0.0, 2*TMath::Pi()}});
-	  JEhistos.add("hMCRec_dPhi_rot_distribution", "hMCRec_dPhi_rot_distribution", kTH1F, {{80, -5.0, 7.0}});
-	  JEhistos.add("hMCRec_dEta_rot_distribution", "hMCRec_dEta_rot_distribution", kTH1F, {{100, -2.0, 2.0}});
-	  JEhistos.add("hMCRec_dEta_qa_rot_distribution", "hMCRec_dEta_qa_rot_distribution", kTH1F, {{100, -4.0, 2.0}});
-	}
+  if (cfgMCRecRotationalHists){
+    JEhistos.add("hMCRec_hUSS_Rotational", "hMCRec_hUSS_Rotational", kTHnSparseF, {dRAxis, PtAxis, MinvAxis});
+    JEhistos.add("hMCRec_R_Rotation_distribution", "hMCRec_R_Rotation_distribution", HistType::kTH1F, {{100, 0.0, 2*TMath::Pi()}});
+    JEhistos.add("hMCRec_dPhi_rot_distribution", "hMCRec_dPhi_rot_distribution", kTH1F, {{80, -5.0, 7.0}});
+    JEhistos.add("hMCRec_dEta_rot_distribution", "hMCRec_dEta_rot_distribution", kTH1F, {{100, -2.0, 2.0}});
+    JEhistos.add("hMCRec_dEta_qa_rot_distribution", "hMCRec_dEta_qa_rot_distribution", kTH1F, {{100, -4.0, 2.0}});
+  }
       }
       // INSIDE
       if (cfgMCRecInsideHists) {
@@ -438,7 +438,7 @@ struct phiInJets {
 
     TLorentzVector lDecayDaughter1, lDecayDaughter2, lResonance;
     //====================================================
-    
+
     if (!trackSelection(trk1) || !trackSelection(trk2))
       return -1;
 
@@ -452,7 +452,7 @@ struct phiInJets {
       if (trk1.globalIndex() == trk2.globalIndex())
         return -1; // For Kstar, we need to run (0,1), (1,0) pairs as well. but same id pairs are not needed.
     }
-	
+
     lDecayDaughter1.SetXYZM(trk1.px(), trk1.py(), trk1.pz(), massKa);
     if (!cfgIsKstar)
       lDecayDaughter2.SetXYZM(trk2.px(), trk2.py(), trk2.pz(), massKa);
@@ -460,9 +460,9 @@ struct phiInJets {
       lDecayDaughter2.SetXYZM(trk2.px(), trk2.py(), trk2.pz(), massPi);
 
     lResonance = lDecayDaughter1 + lDecayDaughter2;
-    
+
     //==================================================
-    
+
     if (std::abs(lResonance.Eta()) > cfgtrkMaxEta)
       return -1;
 
@@ -683,7 +683,7 @@ struct phiInJets {
     //============
     // Track Effl
     for (const auto& track : tracks) {
-      auto originalTrack = track.track_as<myCompleteTracks>();      
+      auto originalTrack = track.track_as<myCompleteTracks>();
       if (!trackSelection(originalTrack))
         continue;
       if (cfgSimPID)
@@ -720,62 +720,62 @@ struct phiInJets {
           continue;
 
 
-	double dPhi = TVector2::Phi_mpi_pi(originalTrack.phi() - originalTrack2.phi());
-	double dEta = originalTrack.eta() - originalTrack2.eta();
-	JEhistos.fill(HIST("hMCRec_dPhi_distribution"), dPhi);
-	JEhistos.fill(HIST("hMCRec_dEta_distribution"), dEta);
-	
-	double dR = TMath::Sqrt(dPhi*dPhi + dEta*dEta);
-	double dR_rot = 0;
+  double dPhi = TVector2::Phi_mpi_pi(originalTrack.phi() - originalTrack2.phi());
+  double dEta = originalTrack.eta() - originalTrack2.eta();
+  JEhistos.fill(HIST("hMCRec_dPhi_distribution"), dPhi);
+  JEhistos.fill(HIST("hMCRec_dEta_distribution"), dEta);
+
+  double dR = TMath::Sqrt(dPhi*dPhi + dEta*dEta);
+  double dR_rot = 0;
         TLorentzVector lDecayDaughter1, lDecayDaughter2, lResonance, lRotationalTrack, lRotationalResonance;
         lDecayDaughter1.SetXYZM(originalTrack.px(), originalTrack.py(), originalTrack.pz(), massKa);
-	//-----------------------------------------------------------------------
+  //-----------------------------------------------------------------------
 
-	TRandom * trand = new TRandom();
-	double shift = trand->Uniform(TMath::Pi()-TMath::Pi()/10.0,TMath::Pi()+TMath::Pi()/10.0);
-	//	double shift = TMath::Pi();
+  TRandom * trand = new TRandom();
+  double shift = trand->Uniform(TMath::Pi()-TMath::Pi()/10.0,TMath::Pi()+TMath::Pi()/10.0);
+  //  double shift = TMath::Pi();
 
         if (!cfgIsKstar)
           lDecayDaughter2.SetXYZM(originalTrack2.px(), originalTrack2.py(), originalTrack2.pz(), massKa);
         else {
           lDecayDaughter2.SetXYZM(originalTrack2.px(), originalTrack2.py(), originalTrack2.pz(), massPi);
-	  /*
-	    double pTog = TMath::Sqrt(originalTrack2.px() * originalTrack2.px() + originalTrack2.py() * originalTrack2.py());
-	    double Pxrot = pTog*TMath::Cos(originalTrack2.phi() + shift);
-	    double Pyrot = pTog*TMath::Sin(originalTrack2.phi() + shift);
+    /*
+      double pTog = TMath::Sqrt(originalTrack2.px() * originalTrack2.px() + originalTrack2.py() * originalTrack2.py());
+      double Pxrot = pTog*TMath::Cos(originalTrack2.phi() + shift);
+      double Pyrot = pTog*TMath::Sin(originalTrack2.phi() + shift);
 
-	    if(gDebug){
-	    double Ptrot = TMath::Sqrt(Pxrot*Pxrot + Pyrot*Pyrot);
-	    if(TMath::Abs(Ptrot-pTog)>0.1) {
-	    std::cout<<"We are jottettta"<<std::endl;
-	    std::cout<<Ptrot-pTog<<std::endl;
-	    }
-	    }
-	     lRotationalTrack.SetXYZM(Pxrot, Pyrot,originalTrack.pz(), massPi);	     
-	  */
-	  lRotationalTrack=lDecayDaughter2;
-	  
-	  //JEhistos.fill(HIST("hMCRec_Phi_Before_Shift"), lRotationalTrack.Phi()); 
-	  lRotationalTrack.RotateZ(shift);
-	  //JEhistos.fill(HIST("hMCRec_Phi_After_Shift"), lRotationalTrack.Phi());	  
+      if(gDebug){
+      double Ptrot = TMath::Sqrt(Pxrot*Pxrot + Pyrot*Pyrot);
+      if(TMath::Abs(Ptrot-pTog)>0.1) {
+      std::cout<<"We are jottettta"<<std::endl;
+      std::cout<<Ptrot-pTog<<std::endl;
+      }
+      }
+       lRotationalTrack.SetXYZM(Pxrot, Pyrot,originalTrack.pz(), massPi);
+    */
+    lRotationalTrack=lDecayDaughter2;
 
-	  double dPhi_rot = TVector2::Phi_mpi_pi(lDecayDaughter1.Phi() - lRotationalTrack.Phi());
-	  double dEta_rot = lDecayDaughter1.Eta() - lRotationalTrack.Eta();
-	  double dEta_rot_qa = TMath::Abs(lDecayDaughter2.Eta()) - TMath::Abs(lRotationalTrack.Eta());
-	  
-	  dR_rot = TMath::Sqrt(dPhi_rot*dPhi_rot + dEta_rot*dEta_rot);
+    //JEhistos.fill(HIST("hMCRec_Phi_Before_Shift"), lRotationalTrack.Phi());
+    lRotationalTrack.RotateZ(shift);
+    //JEhistos.fill(HIST("hMCRec_Phi_After_Shift"), lRotationalTrack.Phi());
 
-	  JEhistos.fill(HIST("hMCRec_dPhi_rot_distribution"), dPhi_rot);
-	  JEhistos.fill(HIST("hMCRec_dEta_rot_distribution"), dEta_rot);
-	  JEhistos.fill(HIST("hMCRec_dEta_qa_rot_distribution"), dEta_rot_qa);
-	}
-	//-----------------------------------------------------------------------	
-	lResonance = lDecayDaughter1 + lDecayDaughter2;
-	if(cfgIsKstar)
-	  lRotationalResonance = lDecayDaughter1 + lRotationalTrack;
+    double dPhi_rot = TVector2::Phi_mpi_pi(lDecayDaughter1.Phi() - lRotationalTrack.Phi());
+    double dEta_rot = lDecayDaughter1.Eta() - lRotationalTrack.Eta();
+    double dEta_rot_qa = TMath::Abs(lDecayDaughter2.Eta()) - TMath::Abs(lRotationalTrack.Eta());
+
+    dR_rot = TMath::Sqrt(dPhi_rot*dPhi_rot + dEta_rot*dEta_rot);
+
+    JEhistos.fill(HIST("hMCRec_dPhi_rot_distribution"), dPhi_rot);
+    JEhistos.fill(HIST("hMCRec_dEta_rot_distribution"), dEta_rot);
+    JEhistos.fill(HIST("hMCRec_dEta_qa_rot_distribution"), dEta_rot_qa);
+  }
+  //-----------------------------------------------------------------------
+  lResonance = lDecayDaughter1 + lDecayDaughter2;
+  if(cfgIsKstar)
+    lRotationalResonance = lDecayDaughter1 + lRotationalTrack;
         if (fabs(lResonance.Eta()) > cfgtrkMaxEta)
           continue;
-	
+
         if (lResonance.M() > 1.005 && lResonance.M() < 1.035)
           PhiCand++;
 
@@ -785,15 +785,15 @@ struct phiInJets {
         if (cfgMCRecMBHists) {
           if (originalTrack.sign() * originalTrack2.sign() < 0) {
             JEhistos.fill(HIST("hMCRec_hUSS"), 1.0, lResonance.Pt(), lResonance.M());
-	    //normal R
-	    JEhistos.fill(HIST("hMCRec_R_distribution"), dR);
+      //normal R
+      JEhistos.fill(HIST("hMCRec_R_distribution"), dR);
 
-	    //switch because of memory
-	    if(cfgMCRecRotationalHists && cfgIsKstar){
-	      JEhistos.fill(HIST("hMCRec_hUSS_Rotational"), 1.0, lRotationalResonance.Pt(), lResonance.M());
-	      //Rotational R
-	      JEhistos.fill(HIST("hMCRec_R_Rotation_distribution"), dR_rot);
-	    }
+      //switch because of memory
+      if(cfgMCRecRotationalHists && cfgIsKstar){
+        JEhistos.fill(HIST("hMCRec_hUSS_Rotational"), 1.0, lRotationalResonance.Pt(), lResonance.M());
+        //Rotational R
+        JEhistos.fill(HIST("hMCRec_R_Rotation_distribution"), dR_rot);
+      }
           } else if (originalTrack.sign() * originalTrack2.sign() > 0) {
             JEhistos.fill(HIST("hMCRec_hLSS"), 1.0, lResonance.Pt(), lResonance.M());
           }
