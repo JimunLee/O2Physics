@@ -102,7 +102,7 @@ struct kstarInOO {
 
   // Mixing
   ConfigurableAxis cfg_bins_MixMult{"cfg_bins_Cent", {VARIABLE_WIDTH, 0.0, 1.0, 5.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0}, "Binning of the centrality axis"};
-  ConfigurableAxis cfg_bins_MixVtx{"cfg_bins_MixVtx", {VARIABLE_WIDTH, -10.0f, -5.f,  0.f, 5.f, 10.f}, "Mixing bins - z-vertex"};
+  ConfigurableAxis cfg_bins_MixVtx{"cfg_bins_MixVtx", {VARIABLE_WIDTH, -10.0f, -5.f, 0.f, 5.f, 10.f}, "Mixing bins - z-vertex"};
   Configurable<int> cfg_Mix_NMixedEvents{"cfg_Mix_NMixedEvents", 10, "Number of mixed events per event"};
 
   // Pair
@@ -125,12 +125,11 @@ struct kstarInOO {
     const AxisSpec PIDAxis = {120, -6, 6};
     const AxisSpec MinvAxis = {cfg_MinvNBins, cfg_MinvMin, cfg_MinvMax};
 
-    if (cfg_Event_CutQA){
+    if (cfg_Event_CutQA) {
       OOhistos.add("hPosZ_BC", "PosZ_Bc", kTH1F, {{100, 0.0, 15.0}});
       OOhistos.add("hPosZ_AC", "PosZ_AC", kTH1F, {{100, 0.0, 15.0}});
     }
 
-    
     if (cfg_Track_CutQA) {
       OOhistos.add("h_rawpT", "h_rawpT", kTH1F, {{1000, 0.0, 10.0}});
       OOhistos.add("h_rawpT_Kaon", "h_rawpT_Kaon", kTH1F, {{1000, 0.0, 10.0}});
@@ -200,7 +199,7 @@ struct kstarInOO {
     if (!event.selection_bit(aod::evsel::kNoCollInTimeRangeStandard))
       return false;
 
-    return true;   
+    return true;
   };
 
   template <typename TracksType>
@@ -340,9 +339,9 @@ struct kstarInOO {
     if (!trackPIDKaon(trk1) || !trackPIDPion(trk2))
       return {-1.0, -1.0};
 
-    if (trk1.globalIndex() == trk2.globalIndex()){
+    if (trk1.globalIndex() == trk2.globalIndex()) {
       // std::cout<<"This happens"<<std::endl;
-      
+
       return {-1.0, -1.0}; // For Kstar, we need to run (0,1), (1,0) pairs as well. but same id pairs are not neede.
     }
     lDecayDaughter1.SetXYZM(trk1.px(), trk1.py(), trk1.pz(), massKa);
@@ -390,16 +389,16 @@ struct kstarInOO {
 
     OOhistos.fill(HIST("nEvents_MC"), 1.5);
     TrackSlicing_MC(collision, tracks, collision, tracks, false);
-    
+
   } // processSameEvents_MC
   PROCESS_SWITCH(kstarInOO, processSameEvent_MC, "process Same Event MC", true);
-  
+
   //=======================================================
   //|
   //|                  MC STUFF (ME)
   //|
   //=======================================================
-  
+
   int nEvents_MC_Mix = 0;
   void processMixedEvent_MC(EventCandidates const& collisions, TrackCandidates_MC const& tracks, aod::McParticles const&)
   {
@@ -416,7 +415,7 @@ struct kstarInOO {
       auto goodEv1 = eventSelection(collision1);
       auto goodEv2 = eventSelection(collision2);
       OOhistos.fill(HIST("nEvents_MC_Mix"), 0.5);
-      
+
       if (!goodEv1 || !goodEv2)
         continue;
 
@@ -426,10 +425,7 @@ struct kstarInOO {
     } // mixing
   } // processMixedEvent_MC
   PROCESS_SWITCH(kstarInOO, processMixedEvent_MC, "process Mixed Event MC", false);
-  
 
-  
-  
   void processEventsDummy(EventCandidates::iterator const&, TrackCandidates const&)
   {
     return;
@@ -437,8 +433,6 @@ struct kstarInOO {
   PROCESS_SWITCH(kstarInOO, processEventsDummy, "dummy", false);
 
 }; // kstarInOO
-
-
 
 WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
 {
