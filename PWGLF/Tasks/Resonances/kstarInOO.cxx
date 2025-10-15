@@ -180,9 +180,9 @@ struct kstarInOO {
 
     if (cfgMcHistos) {
       // histos.add("hPion_PID_Purity", "hPion_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
-      // histos.add("hKaon_PID_Purity", "hKaon_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
-      // histos.add("hSimplePion_PID_Purity", "hSimplePion_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
-      // histos.add("hSimpleKaon_PID_Purity", "hSimpleKaon_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
+      //histos.add("hKaon_PID_Purity", "hKaon_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
+      //histos.add("hSimplePion_PID_Purity", "hSimplePion_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
+      //histos.add("hSimpleKaon_PID_Purity", "hSimpleKaon_PID_Purity", kTH1F, {{3, -1.5, 1.5}});
 
       histos.add("nEvents_MC", "nEvents_MC", kTH1F, {{4, 0.0, 4.0}});
       histos.add("nEvents_MC_True", "nEvents_MC_True", kTH1F, {{4, 0.0, 4.0}});
@@ -191,11 +191,8 @@ struct kstarInOO {
 
       histos.add("hMC_USS_True", "hMC_USS_True", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
       histos.add("hMC_USS_KPi", "hMC_USS_KPi", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
-      histos.add("hMC_USS_PiK", "hMC_USS_PiK", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
       histos.add("hMC_LSS_KPi", "hMC_LSS_KPi", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
-      histos.add("hMC_LSS_PiK", "hMC_LSS_PiK", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
       histos.add("hMC_USS_KPi_Mix", "hMC_USS_KPi_Mix", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
-      histos.add("hMC_USS_PiK_Mix", "hMC_USS_PiK_Mix", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
       histos.add("hMC_USS_KPi_True", "hMC_USS_KPi_True", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
       histos.add("hMC_USS_PiK_True", "hMC_USS_PiK_True", kTHnSparseF, {cfgCentAxis, ptAxis, minvAxis});
     }
@@ -282,12 +279,12 @@ struct kstarInOO {
       return false;
     if (cfgTrackGlobalWoDCATrack && !track.isGlobalTrackWoDCA())
       return false;
-    // if (cfgTracknFindableTPCClusters > 0 && track.tpcNClsFindable() < cfgTracknFindableTPCClusters)
+    //if (cfgTracknFindableTPCClusters > 0 && track.tpcNClsFindable() < cfgTracknFindableTPCClusters)
     if (track.tpcNClsFindable() < cfgTracknFindableTPCClusters)
       return false;
     if (track.tpcNClsCrossedRows() < cfgTracknTPCCrossedRows)
       return false;
-    // if (cfgTracknRowsOverFindable > 0 && track.tpcCrossedRowsOverFindableCls() > cfgTracknRowsOverFindable)
+    //if (cfgTracknRowsOverFindable > 0 && track.tpcCrossedRowsOverFindableCls() > cfgTracknRowsOverFindable)
     if (track.tpcCrossedRowsOverFindableCls() > cfgTracknRowsOverFindable)
       return false;
     if (track.tpcChi2NCl() > cfgTracknTPCChi2)
@@ -549,9 +546,10 @@ struct kstarInOO {
 
     if (trk1.index() >= trk2.index())
       return {-1.0, -1.0};
-
+    
     //    if (trk1.globalIndex() == trk2.globalIndex())
     //   return {-1.0, -1.0};
+
 
     TLorentzVector lDecayDaughter1, lDecayDaughter2, lResonance;
     if (!flip) {
